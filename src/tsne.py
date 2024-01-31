@@ -1,3 +1,11 @@
+# ------------------------------------------------------------------------
+# Copyright (c) 2024 CandleLabAI. All Rights Reserved.
+# ------------------------------------------------------------------------
+
+"""
+tSNE plot helper
+"""
+
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
