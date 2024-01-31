@@ -1,3 +1,11 @@
+# ------------------------------------------------------------------------
+# Copyright (c) 2024 CandleLabAI. All Rights Reserved.
+# ------------------------------------------------------------------------
+
+"""
+Data loader for training and testing
+"""
+
 import os
 import csv
 
