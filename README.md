@@ -2,17 +2,18 @@
 Source code of "CLINet: A Novel Deep Learning Network for ECG Signal Classification", accepted in Journal of Electrocardiology 2024
 
 If you are using this code, please cite our paper:
-
-@article { ref199,
+```bash
+@article {ref199,
 	
- title            = "CLINet: A Novel Deep Learning Network for ECG Signal Classification",
+ title = "CLINet: A Novel Deep Learning Network for ECG Signal Classification",
 	
- year             = "2024",
+ year = "2024",
 	
- author           = "Ananya Mantravadi and Siddharth Saini and R Sai Chandra Teja and Sparsh Mittal and Shrimay Shah and R Sri Devi and Rekha Singhal",
+ author = "Ananya Mantravadi and Siddharth Saini and R Sai Chandra Teja and Sparsh Mittal and Shrimay Shah and R Sri Devi and Rekha Singhal",
 	
- journal          = "Journal of Electrocardiology",
+ journal = "Journal of Electrocardiology",
  }
+ ```
 
 Project Organization
 ------------
