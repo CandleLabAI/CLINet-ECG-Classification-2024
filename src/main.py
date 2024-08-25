@@ -11,34 +11,32 @@ from tensorflow import keras
 from tensorflow.keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
-import plotly.graph_objs as go
-import plotly.io as pio
+import sklearn
 
 from iccad_dataloader import DataGenerator
 from mitbih_dataloader import load_mitbih_dataset
 from tsne import tSNE
-from involution import Involution
 from network import create_lstm_inv_model
 
 def iccad():
     # Load CSV files
-    train = pd.read_csv('/data/iccad/data-indices/train_indice.csv')
-    test = pd.read_csv('/data/iccad/data-indices/test_indice.csv')
+    train = pd.read_csv('../data/iccad/data-indices/train_indice.csv')
+    test = pd.read_csv('../data/iccad/data-indices/test_indice.csv')
 
     # Define classes and initial count
     classes = ['AFb', 'AFt', 'SR', 'SVT', 'VFb', 'VFt', 'VPD', 'VT']
-    initialCount = [1074, 343, 12673, 944, 1263, 266, 953, 12697]
+    initial_count = [1074, 343, 12673, 944, 1263, 266, 953, 12697]
 
     # Initialize data structures for train and test data
-    train = {'filename':[], 'label':[]}
-    test = {'filename':[], 'label':[]}
+    train_data = {'filename':[], 'label':[]}
+    test_data = {'filename':[], 'label':[]}
     count_train = [0] * len(classes)
     count_test = [0] * len(classes)
-    limitT = 0.8
-    limitT1 = 0.2
+    limit_train = 0.8
+    limit_test = 0.2
 
     # Populate train and test data
-    for filename in os.listdir('/data/iccad/tinyml_contest_data_training'):
+    for filename in os.listdir('../data/iccad/tinyml_contest_data_training'):
         cat = filename.split('-')[1]
 
         for i, class_name in enumerate(classes):
@@ -52,16 +50,16 @@ def iccad():
                 count_test[i] += 1
         
     # Create DataFrames from the train and test data dictionaries
-    trainData = pd.DataFrame.from_dict(train)
-    testData = pd.DataFrame.from_dict(test)
+    trainData = pd.DataFrame.from_dict(train_data)
+    testData = pd.DataFrame.from_dict(test_data)
 
     # SAVE CSVs
-    os.mkdir('data/iccad/data_indices1/')
-    trainData.to_csv('data/iccad/data_indices1/train_indice.csv', index=False)
-    testData.to_csv('data/iccad/data_indices1/test_indice.csv', index=False)
+    os.mkdir('../data/iccad/data_indices1/')
+    trainData.to_csv('../data/iccad/data_indices1/train_indice.csv', index=False)
+    testData.to_csv('../data/iccad/data_indices1/test_indice.csv', index=False)
 
-    path_data = '/data/iccad/tinyml_contest_data_training'
-    path_indices = '/data/iccad/data_indices1'
+    path_data = '../data/iccad/tinyml_contest_data_training'
+    path_indices = '../data/iccad/data_indices1'
     SIZE = 1250
 
     # Train Data
@@ -96,6 +94,8 @@ def iccad():
     model.compile(optimizer=Adam(learning_rate=0.001),
                     loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                     metrics=['accuracy'])
+    
+    check_pt = "model_saving/cli_50epochs.weights.h5"
 
     callbacks = [
     keras.callbacks.ReduceLROnPlateau(monitor="val_accuracy", factor=0.2, patience=5, verbose=1),
@@ -143,7 +143,7 @@ def iccad():
 
     # Plot tSNE
     classes = ['AFb', 'AFt', 'SR', 'SVT', 'VFb', 'VFt', 'VPD', 'VT']
-    fig = tSNE(lstm_inv_model, xTest, yTest, '(CNN+LSTM+INV) Model', classes)
+    fig = tSNE(model, xTest, yTest, '(CNN+LSTM+INV) Model', classes)
     fig.show()
 
     # Save plot as PDF
@@ -151,7 +151,7 @@ def iccad():
 
 
 def mitbih():
-    path = '/data/mit-bih/mitbih_database/'
+    dataset_path = '/data/mit-bih/mitbih_database/'
 
     # Load the dataset
     X, y = load_mitbih_dataset(dataset_path)
@@ -177,6 +177,7 @@ def mitbih():
     model.compile(optimizer=Adam(learning_rate=0.001),
                 loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                 metrics=['accuracy'])
+    check_pt = 'model_saving/cli_50epochs'
 
     callbacks = [
     keras.callbacks.ReduceLROnPlateau(monitor="val_accuracy", factor=0.2, patience=5, verbose=1),
@@ -218,7 +219,7 @@ def mitbih():
 
     # Plot tSNE
     classes=['N', 'S', 'V', 'F', 'Q']
-    fig = tSNE(lstm_inv_model, testData, testLabels, '(CNN+LSTM+INV) Model', classes)
+    fig = tSNE(model, testData, testLabels, '(CNN+LSTM+INV) Model', classes)
     fig.show()
 
     # Save plot as PDF

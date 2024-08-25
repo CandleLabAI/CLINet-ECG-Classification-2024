@@ -8,6 +8,8 @@ CLINet model architecture
 from tensorflow import keras
 from involution import Involution
 from tensorflow.keras.optimizers import Adam
+from keras.layers import Flatten
+
 
 def create_lstm_inv_model(num_classes = 8):
     inputs = keras.layers.Input(shape=(1250,1))

@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-def loadCSV(csvf):
+def loadCSV(csv_file):
     """
     Load CSV file and return a dictionary containing information from the CSV.
 
@@ -44,7 +44,7 @@ def txt_to_numpy(filename, row):
     """
     file = open(filename)
     lines = file.readlines()
-    data_mat = np.arange(row, dtype=np.float)
+    data_mat = np.arange(row, dtype=float)
     row_count = 0
     for line in lines:
         line = line.strip().split(' ')
